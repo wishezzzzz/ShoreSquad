@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShoreSquad — Rally your crew, clean the coast</title>
+  <meta name="description" content="ShoreSquad helps you plan beach cleanups with maps, weather, and friends.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- placeholder favicon -->
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">ShoreSquad</h1>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button id="btn-toggle-map" class="btn">Show Map</button>
+        <a class="btn invite" href="#events">Join a Cleanup</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-text">
+        <h2 id="hero-heading">Rally your crew. Track weather. Clean the shore.</h2>
+        <p>Find cleanups, invite friends, and plan the perfect day using live weather and maps.</p>
+        <a class="btn cta" href="#events">Find Events</a>
+      </div>
+      <div class="hero-image" aria-hidden="true">
+        <!-- placeholder illustration --><svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect rx="8" width="200" height="80" fill="#EAF8FF"></rect><text x="20" y="45" fill="#0077A9" font-family="sans-serif" font-size="18">ShoreSquad illustration</text></svg>
+      </div>
+    </section>
+
+    <section id="map" class="map-section" role="region" aria-label="Map">
+      <h3>Map</h3>
+      <div class="map-placeholder" id="map-placeholder">
+        <p>Map will load here.</p>
+      </div>
+    </section>
+
+    <section id="weather" class="weather-card" role="region" aria-label="Weather">
+      <h3>Weather</h3>
+      <div class="weather-content">
+        <p id="weather-summary">—</p>
+      </div>
+    </section>
+
+    <section id="events" class="events" role="region" aria-label="Cleanup events">
+      <h3>Upcoming Cleanups</h3>
+      <ul id="event-list">
+        <li class="event" data-event-id="1">
+          <h4 class="event-title">Morning Tides Clean Up</h4>
+          <p class="event-meta">Sat • 9:00 • 1.2 mi</p>
+          <div class="event-actions">
+            <button class="btn save" aria-label="Save event">Save</button>
+            <button class="btn join" aria-label="Join event">Join</button>
+          </div>
+        </li>
+        <li class="event" data-event-id="2">
+          <h4 class="event-title">Surfers For Good</h4>
+          <p class="event-meta">Sun • 7:30 • 3.0 mi</p>
+          <div class="event-actions">
+            <button class="btn save" aria-label="Save event">Save</button>
+            <button class="btn join" aria-label="Join event">Join</button>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© ShoreSquad — mobilizing communities for cleaner coasts</small>
+    </div>
+  </footer>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

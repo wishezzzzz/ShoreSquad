@@ -1,0 +1,55 @@
+/* ShoreSquad styles
+ * Uses CSS variables for the brand color palette and theming.
+ */
+:root{
+  --sea-500: #0077A9; /* primary */
+  --sea-300: #5db8e8; /* friendly light */
+  --sand-500: #F6C38A; /* accent */
+  --sand-200: #FFF2E6; /* pale background */
+  --surf-600: #004F6B; /* dark deep */
+  --muted: #6B7280; /* UI text */
+  --bg: #FFFFFF;
+  --max-width: 1100px;
+  --radius: 10px;
+  --shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;line-height:1.4;color:#0f172a;background:var(--bg);}
+.container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+
+.site-header{background:linear-gradient(90deg,var(--sea-300), var(--sea-500));color:#fff;padding:1rem 0;}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{margin:0;font-size:1.4rem;font-weight:700}
+.main-nav .btn{margin-left:0.5rem}
+
+.hero{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:2rem 0}
+.hero h2{margin:0 0 0.5rem 0;color:var(--surf-600)}
+.hero p{margin:0 0 1rem 0;color:var(--muted)}
+.btn{background:#fff;border:none;padding:0.6rem 1rem;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.cta{background:var(--sea-500);color:#fff}
+.btn.invite{background:transparent;border:2px solid rgba(255,255,255,0.3);color:#fff}
+
+.map-section, .weather-card, .events{background:var(--sand-200);border-radius:var(--radius);padding:1rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.map-placeholder{min-height:220px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--sea-300), #EAF8FF);border-radius:8px}
+
+.events ul{list-style:none;padding:0;margin:0;}
+.event{padding:0.75rem;border-bottom:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between}
+.event-title{margin:0 0 0.25rem 0}
+.event-meta{margin:0;color:var(--muted);font-size:0.9rem}
+.event-actions .btn{margin-left:0.4rem}
+
+.site-footer{padding:1rem 0;text-align:center;color:var(--muted)}
+
+/* Layout adjustments for smaller screens */
+@media (max-width:820px){
+  .hero{flex-direction:column;align-items:flex-start}
+  .hero-image{width:100%}
+}
+
+/* Accessibility focus styles */
+.btn:focus{outline:4px dashed color-mix(in srgb, var(--sea-500) 50%, black);outline-offset:4px}
+
+/* Utility */
+.hidden{display:none}
