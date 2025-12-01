@@ -59,9 +59,10 @@
     </section>
 
     <section id="weather" class="weather-card" role="region" aria-label="Weather">
-      <h3>Weather</h3>
+      <h3>Weather <button id="btn-refresh-weather" class="btn" aria-label="Refresh weather">Refresh</button></h3>
       <div class="weather-content">
-        <p id="weather-summary">—</p>
+        <p id="weather-summary" aria-live="polite">—</p>
+        <ul id="forecast-list" class="forecast-list" aria-live="polite"></ul>
       </div>
     </section>
 
@@ -70,7 +71,7 @@
       <ul id="event-list">
         <li class="event" data-event-id="1" data-lat="1.381497" data-lng="103.955574">
           <h4 class="event-title">Morning Tides Clean Up <span class="badge next">Next Cleanup</span></h4>
-          <p class="event-meta">Sat • 9:00 • 1.2 mi</p>
+          <p class="event-meta">Sat • 9:00 • 1.9 km</p>
           <div class="event-actions">
             <button class="btn save" aria-label="Save event">Save</button>
             <button class="btn join" aria-label="Join event">Join</button>
@@ -78,7 +79,7 @@
         </li>
         <li class="event" data-event-id="2">
           <h4 class="event-title">Surfers For Good</h4>
-          <p class="event-meta">Sun • 7:30 • 3.0 mi</p>
+          <p class="event-meta">Sun • 7:30 • 4.8 km</p>
           <div class="event-actions">
             <button class="btn save" aria-label="Save event">Save</button>
             <button class="btn join" aria-label="Join event">Join</button>

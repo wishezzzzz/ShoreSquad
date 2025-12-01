@@ -41,18 +41,92 @@ function updateSavedUI() {
   })
 }
 
-// Weather demo: placeholder fetch with graceful fallback
-async function fetchWeatherDemo() {
-  const summary = el('#weather-summary')
-  // Show loader
-  summary.textContent = 'Loading weather...'
+// Weather: fetch NEA 4-day forecast from data.gov.sg (metric units)
+const NEA_4DAY_URL = 'https://api.data.gov.sg/v1/environment/4-day-weather-forecast'
+const NEA_CACHE_KEY = 'shoresquad:nea:4day'
+const NEA_CACHE_TTL = 1000 * 60 * 15 // 15 minutes
+
+function isCacheFresh(ts) {
+  return (Date.now() - ts) < NEA_CACHE_TTL
+}
+
+async function fetchNEAForecast() {
+  const summaryEl = el('#weather-summary')
+  const listEl = el('#forecast-list')
+  summaryEl.textContent = 'Loading forecast...'
+  listEl.innerHTML = ''
+
   try {
-    // Placeholder: use a static sample to avoid needing an API key here
-    await new Promise(resolve => setTimeout(resolve, 500))
-    summary.textContent = 'Sunny • 19°C • Light breeze — good day for a cleanup!'
+    // cached response first
+    const cached = JSON.parse(localStorage.getItem(NEA_CACHE_KEY) || 'null')
+    if (cached && cached.timestamp && isCacheFresh(cached.timestamp)) {
+      renderNEAForecast(cached.data)
+      return cached.data
+    }
+
+    const resp = await fetch(NEA_4DAY_URL)
+    if (!resp.ok) throw new Error('NEA API error: ' + resp.status)
+    const json = await resp.json()
+    const data = json.items && json.items.length ? json.items[0] : null
+    if (!data || !data.forecasts) throw new Error('Invalid NEA forecast response')
+
+    // cache data
+    localStorage.setItem(NEA_CACHE_KEY, JSON.stringify({timestamp: Date.now(), data}))
+
+    renderNEAForecast(data)
+    return data
   } catch (err) {
-    summary.textContent = 'Weather unavailable'
+    console.error('NEA fetch error', err)
+    summaryEl.textContent = 'Weather unavailable'
+    const fallback = document.createElement('li')
+    fallback.textContent = 'Forecast unavailable'
+    listEl.appendChild(fallback)
+    return null
   }
+}
+
+function renderNEAForecast(data) {
+  const summaryEl = el('#weather-summary')
+  const listEl = el('#forecast-list')
+  listEl.innerHTML = ''
+
+  // show a simple summary of today's forecast if it's present
+  if (data && data.forecasts && data.forecasts.length) {
+    const today = data.forecasts[0]
+    summaryEl.textContent = `${today.forecast} • ${today.temperature.low}°C–${today.temperature.high}°C`;
+  }
+
+  // Render each forecast day
+  if (data && data.forecasts) {
+    data.forecasts.forEach(f => {
+      const li = document.createElement('li')
+      const dayName = new Date(f.date + 'T00:00:00').toLocaleDateString(undefined, {weekday:'short', month:'short', day:'numeric'})
+      const lowTemp = f.temperature && f.temperature.low !== undefined ? f.temperature.low : '-'
+      const highTemp = f.temperature && f.temperature.high !== undefined ? f.temperature.high : '-'
+      const windLow = f.wind && f.wind.speed && f.wind.speed.low !== undefined ? f.wind.speed.low : '-'
+      const windHigh = f.wind && f.wind.speed && f.wind.speed.high !== undefined ? f.wind.speed.high : '-'
+      const windDir = f.wind && f.wind.direction ? f.wind.direction : ''
+      const rhLow = f.relative_humidity && f.relative_humidity.low !== undefined ? f.relative_humidity.low : '-'
+      const rhHigh = f.relative_humidity && f.relative_humidity.high !== undefined ? f.relative_humidity.high : '-'
+
+      li.innerHTML = `
+        <div class="forecast-day">${dayName}</div>
+        <div class="forecast-desc">${escapeHtml(f.forecast)}</div>
+        <div class="forecast-temp">${lowTemp}°C — ${highTemp}°C</div>
+        <div class="forecast-meta">Wind: ${windLow}–${windHigh} km/h ${windDir}</div>
+        <div class="forecast-meta">Humidity: ${rhLow}%–${rhHigh}%</div>
+      `
+      listEl.appendChild(li)
+    })
+  }
+}
+
+// rudimentary HTML escaping to avoid injecting unexpected HTML from API
+function escapeHtml(value) {
+  if (!value) return ''
+  return String(value).replace(/[&<>"']/g, function(ch) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[ch]
+  })
 }
 
 // Lazy load map to improve initial performance
@@ -132,6 +206,20 @@ function attachEventListeners() {
     // e.g., recalc map layout, but we just console log in this scaffold
     console.log('resize — update layouts')
   }, 300))
+
+  // Weather refresh button
+  const refreshBtn = el('#btn-refresh-weather')
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      // Clear cache and fetch new data
+      localStorage.removeItem(NEA_CACHE_KEY)
+      await fetchNEAForecast()
+      // Briefly show a success state via button text
+      const prev = refreshBtn.textContent
+      refreshBtn.textContent = 'Updated'
+      setTimeout(() => refreshBtn.textContent = prev, 1500)
+    })
+  }
 }
 
 // Init app
@@ -141,7 +229,7 @@ function init() {
   mapSection.classList.add('hidden')
   attachEventListeners()
   updateSavedUI()
-  fetchWeatherDemo()
+  fetchNEAForecast()
 }
 
 // Boot up
