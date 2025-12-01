@@ -34,7 +34,27 @@
     <section id="map" class="map-section" role="region" aria-label="Map">
       <h3>Map</h3>
       <div class="map-placeholder" id="map-placeholder">
-        <p>Map will load here.</p>
+        <!-- Google Maps iframe for Pasir Ris with marker labelled "Next Cleanup" -->
+        <iframe
+          id="google-map-embed"
+          title="ShoreSquad — Next Cleanup at Pasir Ris"
+          src="https://maps.google.com/maps?q=1.381497,103.955574(Pasir%20Ris%20-%20Next%20Cleanup)&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          width="100%"
+          height="350"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <!-- Fallback for users without JavaScript -->
+        <noscript>
+          <p>
+            <a href="https://www.google.com/maps?q=1.381497,103.955574(Next%20Cleanup)" target="_blank" rel="noopener noreferrer">Open Pasir Ris on Google Maps</a>
+          </p>
+        </noscript>
+
+        <p class="map-caption">Pin: <strong>Next Cleanup</strong> — Pasir Ris (1.381497, 103.955574)</p>
       </div>
     </section>
 
@@ -48,8 +68,8 @@
     <section id="events" class="events" role="region" aria-label="Cleanup events">
       <h3>Upcoming Cleanups</h3>
       <ul id="event-list">
-        <li class="event" data-event-id="1">
-          <h4 class="event-title">Morning Tides Clean Up</h4>
+        <li class="event" data-event-id="1" data-lat="1.381497" data-lng="103.955574">
+          <h4 class="event-title">Morning Tides Clean Up <span class="badge next">Next Cleanup</span></h4>
           <p class="event-meta">Sat • 9:00 • 1.2 mi</p>
           <div class="event-actions">
             <button class="btn save" aria-label="Save event">Save</button>

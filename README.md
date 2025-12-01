@@ -49,6 +49,7 @@ Accessibility tip: Keep contrast >= 4.5:1 for body text; use dark text on pale b
 
 ## Next steps
 - Add a map provider key and connect to the map in `js/app.js`.
+ - A Google Maps iframe is embedded in `index.html` and centered at Pasir Ris (1.381497, 103.955574). Click the next cleanup event in the list to recenter the map on its coordinates.
 - Add a weather API key and implement live calls.
 - Add authentication or SNS invites for group coordination.
 - Create event CRUD for hosts and an admin panel.

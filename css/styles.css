@@ -33,12 +33,17 @@ body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, '
 
 .map-section, .weather-card, .events{background:var(--sand-200);border-radius:var(--radius);padding:1rem;margin-bottom:1rem;box-shadow:var(--shadow)}
 .map-placeholder{min-height:220px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--sea-300), #EAF8FF);border-radius:8px}
+.map-placeholder iframe{width:100%;height:350px;border-radius:8px;border:0;display:block}
+.map-caption{margin:0.5rem 0 0 0;color:var(--muted);font-size:0.9rem}
 
 .events ul{list-style:none;padding:0;margin:0;}
 .event{padding:0.75rem;border-bottom:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between}
 .event-title{margin:0 0 0.25rem 0}
 .event-meta{margin:0;color:var(--muted);font-size:0.9rem}
 .event-actions .btn{margin-left:0.4rem}
+
+.badge{display:inline-block;padding:0.2rem 0.5rem;border-radius:6px;font-size:0.8rem;font-weight:700}
+.badge.next{background:var(--sand-500);color:var(--surf-600);margin-left:0.5rem}
 
 .site-footer{padding:1rem 0;text-align:center;color:var(--muted)}
 

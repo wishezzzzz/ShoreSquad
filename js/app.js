@@ -58,9 +58,15 @@ async function fetchWeatherDemo() {
 // Lazy load map to improve initial performance
 function initMapIfNeeded() {
   const mapContainer = el('#map-placeholder')
+  // If there's already an iframe (we embedded it in HTML), don't reinsert.
   if (mapContainer.dataset.loaded === 'true') return
-  mapContainer.textContent = '';
+  if (mapContainer.querySelector('iframe')) {
+    mapContainer.dataset.loaded = 'true';
+    return;
+  }
 
+  // Fallback placeholder: provide a minimal message if the iframe isn't present
+  mapContainer.textContent = '';
   const info = document.createElement('div')
   info.style.padding = '1rem'
   info.textContent = 'Map loaded (placeholder). Integrate Mapbox or Leaflet for full maps.'
@@ -92,6 +98,32 @@ function attachEventListeners() {
       // placeholder for join flow — could open modal, share link, or integrate auth
       const id = evt.target.closest('.event').dataset.eventId
       window.alert('You joined event ' + id + ' — nice!')
+    }
+
+    // Click on event item to center the map on its coordinates (if available)
+    const clickedEvent = evt.target.closest('.event')
+    if (clickedEvent) {
+      // Do not re-center map if user clicked on a button/link inside the event
+      if (evt.target.closest('.btn, a')) return
+      const lat = clickedEvent.dataset.lat
+      const lng = clickedEvent.dataset.lng
+      if (lat && lng) {
+        // Ensure map is visible
+        const mapSection = el('#map')
+        if (mapSection.classList.contains('hidden')) {
+          mapSection.classList.remove('hidden')
+          el('#btn-toggle-map').textContent = 'Hide Map'
+        }
+        const iframe = el('#google-map-embed')
+        if (iframe) {
+          const qlabel = encodeURIComponent(clickedEvent.querySelector('.event-title').textContent.trim())
+          iframe.src = `https://maps.google.com/maps?q=${lat},${lng}(${qlabel})&t=&z=15&ie=UTF8&iwloc=&output=embed`
+          // set the dataset so we don't reinit
+          el('#map-placeholder').dataset.loaded = 'true'
+        } else {
+          initMapIfNeeded()
+        }
+      }
     }
   })
 
